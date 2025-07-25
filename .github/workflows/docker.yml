@@ -21,12 +21,12 @@ jobs:
       
     - name: Build backend image
       run: |
-        docker build -f docker/Dockerfile.backend -t mammograiph-backend:test ./backend
+        docker build -f docker/Dockerfile.backend -t mammograiph-backend:test .
         echo "✅ Backend Docker image built successfully"
         
     - name: Build frontend image
       run: |
-        docker build -f docker/Dockerfile.frontend -t mammograiph-frontend:test ./frontend
+        docker build -f docker/Dockerfile.frontend -t mammograiph-frontend:test .
         echo "✅ Frontend Docker image built successfully"
         
     - name: Test Docker Compose
