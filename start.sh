@@ -169,7 +169,7 @@ run_health_checks() {
     
     # Model info
     response=$(curl -s http://localhost:8000/api/inference/model/info)
-    if echo "$response" | grep -q "model_info"; then
+    if echo "$response" | grep -q "name"; then
         print_success "Model info check passed"
     else
         print_error "Model info check failed"
