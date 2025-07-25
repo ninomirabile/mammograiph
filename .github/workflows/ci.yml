@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+# Add permissions for security scanning
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   backend-test:
     name: Backend Tests
@@ -23,7 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd backend
-        pip install -r requirements.txt
+        pip install -r ../requirements.txt
         pip install pytest pytest-asyncio
         
     - name: Run basic tests
@@ -80,11 +86,11 @@ jobs:
       
     - name: Test backend Docker build
       run: |
-        docker build -f docker/Dockerfile.backend -t test-backend ./backend || echo "Backend Docker build failed (non-blocking)"
+        docker build -f docker/Dockerfile.backend -t test-backend . || echo "Backend Docker build failed (non-blocking)"
         
     - name: Test frontend Docker build
       run: |
-        docker build -f docker/Dockerfile.frontend -t test-frontend ./frontend || echo "Frontend Docker build failed (non-blocking)"
+        docker build -f docker/Dockerfile.frontend -t test-frontend . || echo "Frontend Docker build failed (non-blocking)"
         
   security-scan:
     name: Security Scan
@@ -102,11 +108,24 @@ jobs:
         format: 'sarif'
         output: 'trivy-results.sarif'
         
-    - name: Upload Trivy scan results
+    - name: Upload Trivy scan results (if Code Scanning enabled)
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
+      continue-on-error: true
+      
+    - name: Display security scan summary
+      if: always()
+      run: |
+        echo "🔒 Security Scan Summary:"
+        if [ -f "trivy-results.sarif" ]; then
+          echo "✅ SARIF file generated successfully"
+          echo "📊 Scan completed - check GitHub Security tab for details"
+        else
+          echo "⚠️ No SARIF file generated"
+        fi
+        echo "💡 Note: Enable Code Scanning in repository settings for full integration"
         
   report:
     name: Generate Report
@@ -131,4 +150,11 @@ jobs:
         echo "### 📝 Notes" >> $GITHUB_STEP_SUMMARY
         echo "- This is a relaxed CI pipeline" >> $GITHUB_STEP_SUMMARY
         echo "- Warnings and non-critical issues are reported but don't block" >> $GITHUB_STEP_SUMMARY
-        echo "- Only critical errors will fail the build" >> $GITHUB_STEP_SUMMARY 
+        echo "- Only critical errors will fail the build" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔒 Security Setup" >> $GITHUB_STEP_SUMMARY
+        echo "- Trivy security scanning is enabled" >> $GITHUB_STEP_SUMMARY
+        echo "- To enable full Code Scanning integration:" >> $GITHUB_STEP_SUMMARY
+        echo "  1. Go to Settings > Security & analysis" >> $GITHUB_STEP_SUMMARY
+        echo "  2. Enable 'Code scanning' feature" >> $GITHUB_STEP_SUMMARY
+        echo "  3. Future runs will show results in Security tab" >> $GITHUB_STEP_SUMMARY 
