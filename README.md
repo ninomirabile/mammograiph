@@ -16,13 +16,9 @@ A functional AI-assisted mammography screening demo with scalable architecture, 
 [![Test Coverage](https://img.shields.io/badge/test%20coverage-85%25-brightgreen.svg)](https://github.com/your-username/mammograiph)
 [![Docker Pulls](https://img.shields.io/badge/docker%20pulls-1k%2B-blue.svg)](https://hub.docker.com/r/your-username/mammograiph)
 
-[![Contributors](https://img.shields.io/github/contributors/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/pulls)
-[![Stars](https://img.shields.io/github/stars/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/stargazers)
 
 <div align="center">
-  <img src="docs/Screenshot_1.png" alt="AI Medical Imaging Demo" width="600px">
+  <img src="docs/Screenshot_2.png" alt="AI Medical Imaging Demo" width="600px">
 </div>
 
 ## 📋 Table of Contents
