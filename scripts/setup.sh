@@ -30,6 +30,15 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Get the correct docker compose command
+get_compose_cmd() {
+    if docker compose version >/dev/null 2>&1; then
+        echo "docker compose"
+    else
+        echo "docker-compose"
+    fi
+}
+
 # Check if Docker is installed
 check_docker() {
     print_status "Checking Docker installation..."
@@ -38,12 +47,15 @@ check_docker() {
         exit 1
     fi
     
-    if ! command -v docker-compose &> /dev/null; then
+    # Check for Docker Compose
+    if docker compose version >/dev/null 2>&1; then
+        print_success "Docker and Docker Compose v2 are installed"
+    elif command -v docker-compose &> /dev/null; then
+        print_success "Docker and Docker Compose v1 are installed"
+    else
         print_error "Docker Compose is not installed. Please install Docker Compose first."
         exit 1
     fi
-    
-    print_success "Docker and Docker Compose are installed"
 }
 
 # Check if ports are available
@@ -75,11 +87,13 @@ create_directories() {
 start_services() {
     print_status "Building and starting services..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Build images
-    docker-compose build
+    $COMPOSE_CMD build
     
     # Start services
-    docker-compose up -d
+    $COMPOSE_CMD up -d
     
     print_success "Services started"
 }
@@ -87,6 +101,8 @@ start_services() {
 # Wait for services to be ready
 wait_for_services() {
     print_status "Waiting for services to be ready..."
+    
+    COMPOSE_CMD=$(get_compose_cmd)
     
     # Wait for backend
     print_status "Waiting for backend..."
@@ -128,9 +144,9 @@ show_final_info() {
     echo "   API Documentation: http://localhost:8000/docs"
     echo ""
     echo "🔧 Useful commands:"
-    echo "   View logs: docker-compose logs -f"
-    echo "   Stop services: docker-compose down"
-    echo "   Restart services: docker-compose restart"
+    echo "   View logs: $(get_compose_cmd) logs -f"
+    echo "   Stop services: $(get_compose_cmd) down"
+    echo "   Restart services: $(get_compose_cmd) restart"
     echo "   Health check: curl http://localhost:8000/api/health"
     echo ""
     echo "⚠️  Disclaimer: This is a demonstration system using mock AI."

@@ -31,9 +31,22 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Get the correct docker compose command
+get_compose_cmd() {
+    if docker compose version >/dev/null 2>&1; then
+        echo "docker compose"
+    else
+        echo "docker-compose"
+    fi
+}
+
 # Check if Docker Compose is available
 check_docker_compose() {
-    if ! command -v docker-compose &> /dev/null; then
+    if docker compose version >/dev/null 2>&1; then
+        print_success "Docker Compose v2 is available"
+    elif command -v docker-compose &> /dev/null; then
+        print_success "Docker Compose v1 is available"
+    else
         print_error "Docker Compose is not installed."
         exit 1
     fi
@@ -51,8 +64,10 @@ check_compose_file() {
 stop_services() {
     print_status "Stopping Docker services..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Stop services gracefully
-    if docker-compose down; then
+    if $COMPOSE_CMD down; then
         print_success "Services stopped successfully"
     else
         print_warning "Some services may not have stopped cleanly"
@@ -87,11 +102,13 @@ cleanup_networks() {
 check_services_status() {
     print_status "Checking if services are still running..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Check if containers are still running
-    if docker-compose ps | grep -q "Up"; then
+    if $COMPOSE_CMD ps | grep -q "Up"; then
         print_warning "Some services are still running"
         print_status "Current service status:"
-        docker-compose ps
+        $COMPOSE_CMD ps
         return 1
     else
         print_success "All services are stopped"
@@ -103,8 +120,10 @@ check_services_status() {
 force_stop() {
     print_warning "Attempting force stop..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Force stop all containers
-    if docker-compose down --remove-orphans; then
+    if $COMPOSE_CMD down --remove-orphans; then
         print_success "Services force stopped"
     else
         print_error "Failed to force stop services"
@@ -124,9 +143,9 @@ show_final_info() {
     echo ""
     echo "🔧 Useful commands:"
     echo "   Start again: ./start.sh"
-    echo "   View logs: docker-compose logs"
-    echo "   Clean everything: docker-compose down -v --remove-orphans"
-    echo "   Remove images: docker-compose down --rmi all"
+    echo "   View logs: $(get_compose_cmd) logs"
+    echo "   Clean everything: $(get_compose_cmd) down -v --remove-orphans"
+    echo "   Remove images: $(get_compose_cmd) down --rmi all"
     echo ""
 }
 

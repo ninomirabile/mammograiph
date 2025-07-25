@@ -39,27 +39,41 @@ check_docker() {
         exit 1
     fi
     
-    if ! command -v docker-compose &> /dev/null; then
+    # Check for Docker Compose v2
+    if docker compose version >/dev/null 2>&1; then
+        print_success "Docker and Docker Compose v2 are installed"
+    elif command -v docker-compose &> /dev/null; then
+        print_success "Docker and Docker Compose v1 are installed"
+    else
         print_error "Docker Compose is not installed. Please install Docker Compose first."
         exit 1
     fi
-    
-    print_success "Docker and Docker Compose are installed"
+}
+
+# Get the correct docker compose command
+get_compose_cmd() {
+    if docker compose version >/dev/null 2>&1; then
+        echo "docker compose"
+    else
+        echo "docker-compose"
+    fi
 }
 
 # Check if ports are available
 check_ports() {
     print_status "Checking port availability..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null 2>&1; then
         print_warning "Port 3000 is already in use. Stopping existing process..."
-        docker-compose down 2>/dev/null || true
+        $COMPOSE_CMD down 2>/dev/null || true
         sleep 2
     fi
     
     if lsof -Pi :8000 -sTCP:LISTEN -t >/dev/null 2>&1; then
         print_warning "Port 8000 is already in use. Stopping existing process..."
-        docker-compose down 2>/dev/null || true
+        $COMPOSE_CMD down 2>/dev/null || true
         sleep 2
     fi
     
@@ -80,13 +94,15 @@ create_directories() {
 start_services() {
     print_status "Building and starting services..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Build images
     print_status "Building Docker images..."
-    docker-compose build
+    $COMPOSE_CMD build
     
     # Start services
     print_status "Starting services..."
-    docker-compose up -d
+    $COMPOSE_CMD up -d
     
     print_success "Services started"
 }
@@ -94,6 +110,8 @@ start_services() {
 # Wait for services to be ready
 wait_for_services() {
     print_status "Waiting for services to be ready..."
+    
+    COMPOSE_CMD=$(get_compose_cmd)
     
     # Wait for backend
     print_status "Waiting for backend..."
@@ -105,7 +123,7 @@ wait_for_services() {
         if [ $i -eq 60 ]; then
             print_error "Backend failed to start within 60 seconds"
             print_status "Checking logs..."
-            docker-compose logs backend
+            $COMPOSE_CMD logs backend
             exit 1
         fi
         sleep 1
@@ -121,7 +139,7 @@ wait_for_services() {
         if [ $i -eq 60 ]; then
             print_warning "Frontend may not be ready yet"
             print_status "Checking logs..."
-            docker-compose logs frontend
+            $COMPOSE_CMD logs frontend
             break
         fi
         sleep 1
@@ -172,7 +190,7 @@ show_final_info() {
     echo "   API Documentation: http://localhost:8000/docs"
     echo ""
     echo "🔧 Useful commands:"
-    echo "   View logs: docker-compose logs -f"
+    echo "   View logs: $(get_compose_cmd) logs -f"
     echo "   Stop services: ./stop.sh"
     echo "   Restart services: ./stop.sh && ./start.sh"
     echo "   Health check: curl http://localhost:8000/api/health"
@@ -203,12 +221,13 @@ main() {
     show_final_info
     
     # Keep the script running and show logs
+    COMPOSE_CMD=$(get_compose_cmd)
     print_status "Showing logs (press Ctrl+C to stop)..."
-    docker-compose logs -f
+    $COMPOSE_CMD logs -f
 }
 
 # Handle Ctrl+C gracefully
-trap 'echo ""; print_status "Stopping services..."; docker-compose down; print_success "Services stopped"; exit 0' INT
+trap 'echo ""; print_status "Stopping services..."; $(get_compose_cmd) down; print_success "Services stopped"; exit 0' INT
 
 # Run main function
 main "$@" 
