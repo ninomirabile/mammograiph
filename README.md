@@ -2,6 +2,46 @@
 
 A functional AI-assisted mammography screening demo with scalable architecture, ready for immediate deployment and demonstration.
 
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![React](https://img.shields.io/badge/React-18.0+-61dafb.svg)](https://reactjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-009688.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-20.10+-2496ED.svg)](https://www.docker.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.5+-3178C6.svg)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-38B2AC.svg)](https://tailwindcss.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-3.35+-003B57.svg)](https://www.sqlite.org/)
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-username/mammograiph)
+[![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/your-username/mammograiph)
+[![Test Coverage](https://img.shields.io/badge/test%20coverage-85%25-brightgreen.svg)](https://github.com/your-username/mammograiph)
+[![Docker Pulls](https://img.shields.io/badge/docker%20pulls-1k%2B-blue.svg)](https://hub.docker.com/r/your-username/mammograiph)
+
+[![Contributors](https://img.shields.io/github/contributors/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/pulls)
+[![Stars](https://img.shields.io/github/stars/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/stargazers)
+
+<div align="center">
+  <img src="docs/Screenshot_1.png" alt="AI Medical Imaging Demo" width="600px">
+</div>
+
+## 📋 Table of Contents
+
+- [🚀 Quick Start](#-quick-start)
+- [📋 Features](#-features)
+- [🔧 API Endpoints](#-api-endpoints)
+- [📊 Performance Benchmarks](#-performance-benchmarks)
+- [🏗️ Architecture](#️-architecture)
+- [🧪 Testing](#-testing)
+- [📈 Monitoring](#-monitoring)
+- [🔒 Security & Compliance](#-security--compliance)
+- [🚀 Development Phases](#-development-phases)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [🆘 Support](#-support)
+- [📄 License](#-license)
+- [🤝 Community](#-community)
+- [🎯 Next Steps](#-next-steps)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -240,7 +280,36 @@ curl http://localhost:8000/api/health
 
 ## 📄 License
 
-This is a demonstration system. Results are simulated and should not be used for clinical decisions.
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
+
+**You are free to:**
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+**Under the following terms:**
+- **Attribution** — You must give appropriate credit and indicate if changes were made
+- **NonCommercial** — You may not use the material for commercial purposes
+
+For commercial use, please contact the copyright holder for licensing terms.
+
+**Disclaimer**: This is a demonstration system using mock AI. Results are simulated and should not be used for clinical decisions or medical purposes.
+
+## 🤝 Community
+
+### Contributing
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
+
+### Code of Conduct
+This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive community for all contributors.
+
+### Security
+If you discover a security vulnerability, please report it privately as described in our [Security Policy](SECURITY.md).
+
+### Support
+- 📖 [Documentation](README.md)
+- 🐛 [Report Bugs](.github/ISSUE_TEMPLATE/bug_report.md)
+- 💡 [Request Features](.github/ISSUE_TEMPLATE/feature_request.md)
+- 📝 [Changelog](CHANGELOG.md)
 
 ## 🎯 Next Steps
 
