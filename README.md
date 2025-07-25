@@ -2,6 +2,8 @@
 
 A functional AI-assisted mammography screening demo with scalable architecture, ready for immediate deployment and demonstration.
 
+**Author:** Antonino Mirabile
+
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![React](https://img.shields.io/badge/React-18.0+-61dafb.svg)](https://reactjs.org/)
@@ -217,21 +219,21 @@ docker-compose logs -f frontend
 - **Features**: Upload, analysis, results display
 - **Team**: 1-2 developers
 - **Timeline**: 1-2 weeks
-- **Cost**: €12,000-15,000
+- **Cost**: 💸💸💸💸💸💸
 
 ### Phase 2: Clinical
 - **Objective**: Clinical-grade system with compliance
 - **Features**: DICOM support, authentication, workflow
 - **Team**: 3-4 developers + medical expert
 - **Timeline**: 3-4 months
-- **Cost**: €65,000-75,000
+- **Cost**: 💸💸💸💰💰💰
 
 ### Phase 3: Enterprise
 - **Objective**: FDA-compliant enterprise system
 - **Features**: Multi-tenant, MLOps, advanced analytics
 - **Team**: 6-8 developers + medical/regulatory experts
 - **Timeline**: 6-8 months
-- **Cost**: €190,000-220,000
+- **Cost**: 💰💰💰💰💰💰💰💰
 
 ## 🛠️ Technology Stack
 
