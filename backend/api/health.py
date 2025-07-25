@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from backend.storage.database import get_db
 from backend.ai.mock import MockMammographyClassifier
 import logging
@@ -21,7 +22,7 @@ async def detailed_health_check(db: Session = Depends(get_db)):
     """Detailed health check with database and AI model status"""
     try:
         # Test database connection
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db_status = "healthy"
     except Exception as e:
         logger.error(f"Database health check failed: {str(e)}")

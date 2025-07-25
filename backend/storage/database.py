@@ -5,6 +5,7 @@ import os
 import logging
 from typing import AsyncGenerator
 from .models import Base
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,44 @@ async def init_db():
         
     except Exception as e:
         logger.error(f"Database initialization failed: {str(e)}")
+        raise
+
+async def update_study_analysis(
+    db: Session,
+    study_id: str,
+    prediction: str,
+    confidence: float,
+    processing_time: float,
+    regions: list = None,
+    model_version: str = None,
+    image_quality: str = None
+) -> dict:
+    """Update study with AI analysis results"""
+    try:
+        from .models import Study
+        
+        study = db.query(Study).filter(Study.study_id == study_id).first()
+        if not study:
+            raise ValueError(f"Study not found: {study_id}")
+        
+        # Update AI analysis fields
+        study.prediction = prediction
+        study.confidence = confidence
+        study.processing_time = processing_time
+        study.regions = regions or []
+        study.model_version = model_version
+        study.image_quality = image_quality
+        study.updated_at = datetime.now()
+        
+        db.commit()
+        db.refresh(study)
+        
+        logger.info(f"Study analysis updated successfully: {study_id}")
+        return study.to_dict()
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Failed to update study analysis: {str(e)}")
         raise
 
 async def save_study(
