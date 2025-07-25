@@ -1,0 +1,54 @@
+name: Security Scan
+
+on:
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'table'
+        exit-code: '0'
+        severity: 'CRITICAL,HIGH'
+        
+    - name: Run Bandit security linter (Python)
+      run: |
+        pip install bandit
+        cd backend
+        bandit -r . -f json -o bandit-report.json || echo "Bandit scan completed with issues (non-blocking)"
+        
+    - name: Run npm audit (Node.js)
+      run: |
+        cd frontend
+        npm audit --audit-level=high || echo "npm audit completed with issues (non-blocking)"
+        
+    - name: Create security report
+      if: always()
+      run: |
+        echo "## 🔒 Security Scan Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Scan Results" >> $GITHUB_STEP_SUMMARY
+        echo "- Trivy: Vulnerability scan completed" >> $GITHUB_STEP_SUMMARY
+        echo "- Bandit: Python security analysis completed" >> $GITHUB_STEP_SUMMARY
+        echo "- npm audit: Node.js dependency scan completed" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ℹ️ Notes" >> $GITHUB_STEP_SUMMARY
+        echo "- This is a non-blocking security scan" >> $GITHUB_STEP_SUMMARY
+        echo "- Critical and High severity issues are reported" >> $GITHUB_STEP_SUMMARY
+        echo "- Review results in the Security tab" >> $GITHUB_STEP_SUMMARY 

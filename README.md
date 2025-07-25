@@ -11,10 +11,15 @@ A functional AI-assisted mammography screening demo with scalable architecture, 
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-38B2AC.svg)](https://tailwindcss.com/)
 [![SQLite](https://img.shields.io/badge/SQLite-3.35+-003B57.svg)](https://www.sqlite.org/)
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-username/mammograiph)
+[![CI](https://github.com/your-username/mammograiph/workflows/CI%20-%20Build%20%26%20Test/badge.svg)](https://github.com/your-username/mammograiph/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/your-username/mammograiph/workflows/Security%20Scan/badge.svg)](https://github.com/your-username/mammograiph/actions/workflows/security.yml)
+[![Docker Build](https://github.com/your-username/mammograiph/workflows/Docker%20Build%20%26%20Test/badge.svg)](https://github.com/your-username/mammograiph/actions/workflows/docker.yml)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/your-username/mammograiph)
-[![Test Coverage](https://img.shields.io/badge/test%20coverage-85%25-brightgreen.svg)](https://github.com/your-username/mammograiph)
-[![Docker Pulls](https://img.shields.io/badge/docker%20pulls-1k%2B-blue.svg)](https://hub.docker.com/r/your-username/mammograiph)
+
+[![Contributors](https://img.shields.io/github/contributors/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/pulls)
+[![Stars](https://img.shields.io/github/stars/your-username/mammograiph.svg)](https://github.com/your-username/mammograiph/stargazers)
 
 
 <div align="center">
