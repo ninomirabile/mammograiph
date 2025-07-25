@@ -8,9 +8,10 @@ from .models import Base
 
 logger = logging.getLogger(__name__)
 
-# Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./medical_ai.db")
-ASYNC_DATABASE_URL = os.getenv("ASYNC_DATABASE_URL", "sqlite+aiosqlite:///./medical_ai.db")
+# Database configuration - Use in-memory SQLite for testing
+DB_PATH = os.getenv("DB_PATH", ":memory:")
+DATABASE_URL = f"sqlite:///{DB_PATH}"
+ASYNC_DATABASE_URL = f"sqlite+aiosqlite:///{DB_PATH}"
 
 # Create engines
 engine = create_engine(

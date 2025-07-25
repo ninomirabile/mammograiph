@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from typing import Dict, Any
 import os
 import logging
-from ai.mock import MockMammographyClassifier
-from storage.database import get_db, get_study, save_study
+from backend.ai.mock import MockMammographyClassifier
+from backend.storage.database import get_db, get_study, save_study
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import logging
-from api import upload, inference, health
-from storage.database import init_db
+from backend.api import upload, inference, health
+from backend.storage.database import init_db
 
 # Configure logging
 logging.basicConfig(

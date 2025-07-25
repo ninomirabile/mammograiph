@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -9,9 +7,8 @@ services:
       - "8000:8000"
     volumes:
       - ./uploads:/app/uploads
-      - ./medical_ai.db:/app/medical_ai.db
     environment:
-      - DATABASE_URL=sqlite:///./medical_ai.db
+      DATABASE_URL: "sqlite:///:memory:"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
@@ -29,7 +26,7 @@ services:
       - backend
     restart: unless-stopped
     environment:
-      - VITE_API_URL=http://localhost:8000/api
+      VITE_API_URL: "http://localhost:8000/api"
 
   # Development service (optional)
   backend-dev:
@@ -41,9 +38,8 @@ services:
     volumes:
       - ./backend:/app/backend
       - ./uploads:/app/uploads
-      - ./medical_ai.db:/app/medical_ai.db
     environment:
-      - DATABASE_URL=sqlite:///./medical_ai.db
+      DATABASE_URL: "sqlite:///:memory:"
     command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     profiles:
       - dev
@@ -60,7 +56,7 @@ services:
     depends_on:
       - backend-dev
     environment:
-      - VITE_API_URL=http://localhost:8001/api
+      VITE_API_URL: "http://localhost:8001/api"
     command: ["npm", "run", "dev"]
     profiles:
       - dev 

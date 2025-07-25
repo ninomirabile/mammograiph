@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from storage.database import get_db
-from ai.mock import MockMammographyClassifier
+from backend.storage.database import get_db
+from backend.ai.mock import MockMammographyClassifier
 import logging
 
 logger = logging.getLogger(__name__)
