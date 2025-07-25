@@ -24,6 +24,18 @@ docker-compose up -d
 # API Documentation: http://localhost:8000/docs
 ```
 
+### Local Development & Testing
+```bash
+# Start the application (with logs)
+./start.sh
+
+# Stop the application
+./stop.sh
+
+# Restart the application
+./stop.sh && ./start.sh
+```
+
 ### Automated Setup
 ```bash
 # Run the automated setup script
@@ -239,4 +251,4 @@ This is a demonstration system. Results are simulated and should not be used for
 
 ---
 
-**Ready to deploy?** Run `./scripts/setup.sh` to get started in minutes! 🚀
+**Ready to deploy?** Run `./start.sh` to get started in minutes! 🚀
