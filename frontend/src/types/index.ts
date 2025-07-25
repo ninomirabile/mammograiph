@@ -53,7 +53,13 @@ export interface UploadResponse {
 export interface AnalysisResponse {
   study_id: string;
   status: string;
-  analysis?: AnalysisResult;
+  prediction?: string;
+  confidence?: number;
+  processing_time?: number;
+  regions?: Region[];
+  model_version?: string;
+  image_quality?: string;
+  analysis_date?: string;
   message?: string;
 }
 

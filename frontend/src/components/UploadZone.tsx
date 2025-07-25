@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { uploadImage } from '../services/api';
 
@@ -15,6 +15,8 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const previewFileRef = useRef<File | null>(null);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (disabled || isUploading) return;
@@ -26,7 +28,19 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
     const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/dicom'];
     if (!validTypes.includes(file.type)) {
       onError('Please upload a valid image file (PNG, JPEG) or DICOM file');
+      setPreviewUrl(null);
+      previewFileRef.current = null;
       return;
+    }
+
+    // Show preview only for PNG/JPEG
+    if (file.type.startsWith('image/')) {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
+      previewFileRef.current = file;
+    } else {
+      setPreviewUrl(null);
+      previewFileRef.current = null;
     }
 
     // Validate file size (50MB limit)
@@ -59,6 +73,10 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
       setTimeout(() => {
         setIsUploading(false);
         setProgress(0);
+        // Keep preview visible after upload
+        // if (previewUrl) URL.revokeObjectURL(previewUrl);
+        // setPreviewUrl(null);
+        // previewFileRef.current = null;
         onUploadComplete(result.study_id);
       }, 500);
 
@@ -67,7 +85,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
       setProgress(0);
       onError(error instanceof Error ? error.message : 'Upload failed');
     }
-  }, [disabled, isUploading, onUploadComplete, onError]);
+  }, [disabled, isUploading, onUploadComplete, onError, previewUrl]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -81,6 +99,33 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
 
   return (
     <div className="space-y-4">
+      {/* Image Preview */}
+      {previewUrl && (
+        <div className="flex flex-col items-center mb-2">
+          <div className="relative">
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="max-h-48 rounded shadow border"
+              style={{ maxWidth: '100%', objectFit: 'contain' }}
+            />
+            <button
+              onClick={() => {
+                URL.revokeObjectURL(previewUrl);
+                setPreviewUrl(null);
+                previewFileRef.current = null;
+              }}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+              title="Remove preview"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">Preview - Click X to remove</p>
+        </div>
+      )}
       {/* Upload Zone */}
       <div
         {...getRootProps()}

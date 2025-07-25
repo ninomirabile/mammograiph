@@ -27,10 +27,25 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   const checkExistingAnalysis = async () => {
     try {
       const response = await getAnalysisResult(studyId);
-      if (response.status === 'completed' && response.analysis) {
-        setResult(response.analysis);
+      
+      // Backend returns analysis data directly
+      if (response.status === 'analyzed' || response.status === 'completed') {
+        const analysisResult: AnalysisResult = {
+          prediction: response.prediction || 'unknown',
+          confidence: response.confidence || 0,
+          processing_time: response.processing_time || 0,
+          regions: response.regions || [],
+          metadata: {
+            model_version: response.model_version || 'unknown',
+            processing_date: response.analysis_date || new Date().toISOString(),
+            image_quality: response.image_quality || 'unknown',
+            lesion_count: response.regions?.length || 0
+          }
+        };
+        
+        setResult(analysisResult);
         setAnalysisStatus('completed');
-        onAnalysisComplete(response.analysis);
+        onAnalysisComplete(analysisResult);
       } else {
         setAnalysisStatus('pending');
       }
@@ -46,10 +61,25 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
     try {
       const response = await analyzeImage(studyId);
-      if (response.status === 'completed' && response.analysis) {
-        setResult(response.analysis);
+      
+      // Backend returns analysis data directly
+      if (response.status === 'analyzed' || response.status === 'completed') {
+        const analysisResult: AnalysisResult = {
+          prediction: response.prediction || 'unknown',
+          confidence: response.confidence || 0,
+          processing_time: response.processing_time || 0,
+          regions: response.regions || [],
+          metadata: {
+            model_version: response.model_version || 'unknown',
+            processing_date: response.analysis_date || new Date().toISOString(),
+            image_quality: response.image_quality || 'unknown',
+            lesion_count: response.regions?.length || 0
+          }
+        };
+        
+        setResult(analysisResult);
         setAnalysisStatus('completed');
-        onAnalysisComplete(response.analysis);
+        onAnalysisComplete(analysisResult);
       } else {
         throw new Error(response.message || 'Analysis failed');
       }
