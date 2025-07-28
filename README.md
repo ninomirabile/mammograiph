@@ -52,7 +52,7 @@ A functional AI-assisted mammography screening demo with scalable architecture, 
 ### Production Deployment
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/ninomirabile/mammograiph.git
 cd mammograiph
 
 # Start the application
